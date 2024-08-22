@@ -10,11 +10,11 @@ const TabsLayout = () => {
       tabBarActiveTintColor: COLORS.primaryOrangeHex,
       tabBarInactiveTintColor: COLORS.primaryLightGreyHex,
       headerShown: false,
-      tabBarShowLabel: false,
+      // tabBarShowLabel: false,
       tabBarHideOnKeyboard: true,
       tabBarStyle: styles.tabBarStyle,
       tabBarBackground: () => (
-        <BlurView  intensity={15} style={styles.blurViewStyles}/>
+        <BlurView intensity={15} style={styles.blurViewStyles} />
       )
     }}
     >
@@ -33,17 +33,17 @@ const TabsLayout = () => {
         }}
       />
       <Tabs.Screen
-        name="history"
-        options={{
-          title: 'History',
-          tabBarIcon: ({ color }) => <FontAwesome name="history" size={24} color={color} />,
-        }}
-      />
-      <Tabs.Screen
         name="favourite"
         options={{
           title: 'Favourite',
           tabBarIcon: ({ color }) => <FontAwesome name="heart" size={24} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="history"
+        options={{
+          title: 'History',
+          tabBarIcon: ({ color }) => <FontAwesome name="history" size={24} color={color} />,
         }}
       />
     </Tabs>
@@ -51,11 +51,13 @@ const TabsLayout = () => {
 }
 const styles = StyleSheet.create({
   tabBarStyle: {
-    height: 80,
-    position: 'relative',
+    position: 'absolute',
     backgroundColor: COLORS.primaryBlackRGBA,
     borderTopWidth: 0,
     elevation: 0,
+    height: 70,
+    paddingBottom: 15,
+    paddingTop: 15,
   },
   blurViewStyles: {
     position: 'absolute',
