@@ -10,7 +10,7 @@ const HeaderBar = ({ title }
         title?: string
     }) => {
     return (
-        <View className='p-3 flex-row items-center justify-between'>
+        <View className='flex-row items-center justify-between'>
             <GrandientButton colors={[COLORS.primaryLightGreyHex, 'transparent']}>
                 <FontAwesome name="th-large"
                     size={18}
