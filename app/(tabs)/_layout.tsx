@@ -1,37 +1,68 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
-
-import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
-
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
+import { View, Text, StyleSheet } from 'react-native'
+import React from 'react'
+import { Tabs } from 'expo-router'
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { COLORS } from '@/theme/theme';
+import { BlurView } from 'expo-blur';
+const TabsLayout = () => {
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-      }}>
+    <Tabs screenOptions={{
+      tabBarActiveTintColor: COLORS.primaryOrangeHex,
+      tabBarInactiveTintColor: COLORS.primaryLightGreyHex,
+      headerShown: false,
+      tabBarShowLabel: false,
+      tabBarHideOnKeyboard: true,
+      tabBarStyle: styles.tabBarStyle,
+      tabBarBackground: () => (
+        <BlurView  intensity={15} style={styles.blurViewStyles}/>
+      )
+    }}
+    >
       <Tabs.Screen
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
-          ),
+          tabBarIcon: ({ color }) => <FontAwesome size={28} name="home" color={color} />,
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="cart"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
-          ),
+          title: 'Cart',
+          tabBarIcon: ({ color }) => <FontAwesome name="shopping-cart" size={24} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="history"
+        options={{
+          title: 'History',
+          tabBarIcon: ({ color }) => <FontAwesome name="history" size={24} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="favourite"
+        options={{
+          title: 'Favourite',
+          tabBarIcon: ({ color }) => <FontAwesome name="heart" size={24} color={color} />,
         }}
       />
     </Tabs>
-  );
+  )
 }
+const styles = StyleSheet.create({
+  tabBarStyle: {
+    height: 80,
+    position: 'relative',
+    backgroundColor: COLORS.primaryBlackRGBA,
+    borderTopWidth: 0,
+    elevation: 0,
+  },
+  blurViewStyles: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+  }
+})
+export default TabsLayout
