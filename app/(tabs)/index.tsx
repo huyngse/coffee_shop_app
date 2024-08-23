@@ -1,7 +1,7 @@
 import { View, Text, ScrollView, TouchableOpacity, TextInput, FlatList, Dimensions } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useStore } from '@/store/store';
+import { ProductState, useProductStore } from '@/store/store';
 import ExpoStatusBar from 'expo-status-bar/build/ExpoStatusBar';
 import { COLORS } from '@/theme/theme';
 import HeaderBar from '@/components/HeaderBar';
@@ -27,8 +27,8 @@ const getCoffeeByCategory = (cate: string, coffeeList: CoffeeType[]) => {
 }
 // HOME PAGE
 const Home = () => {
-  const coffeeList = useStore((state: any) => state.CoffeeList);
-  const beanList = useStore((state: any) => state.BeanList);
+  const coffeeList = useProductStore((state: ProductState) => state.CoffeeList);
+  const beanList = useProductStore((state: ProductState) => state.BeanList);
   const [categories, setCategories] = useState<string[]>([]);
   const [searchValue, setSearchValue] = useState("");
   const [cateIndex, setCateIndex] = useState({

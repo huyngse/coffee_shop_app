@@ -1,6 +1,6 @@
 import { CoffeeType } from "@/types";
 
-const CoffeeData = [
+const CoffeeData: CoffeeType[] = [
   {
     id: 'C1',
     name: 'Americano',
