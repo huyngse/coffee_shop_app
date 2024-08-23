@@ -52,7 +52,7 @@ const TabsLayout = () => {
 const styles = StyleSheet.create({
   tabBarStyle: {
     position: 'absolute',
-    backgroundColor: COLORS.primaryBlackRGBA,
+    backgroundColor: "rgba(0,0,0,1)",
     borderTopWidth: 0,
     elevation: 0,
     height: 70,
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     paddingTop: 15,
   },
   blurViewStyles: {
-    position: 'absolute',
+    position: 'relative',
     top: 0,
     bottom: 0,
     left: 0,
