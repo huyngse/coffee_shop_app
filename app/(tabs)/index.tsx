@@ -1,5 +1,5 @@
-import { View, Text, ScrollView, TouchableOpacity, TextInput, NativeSyntheticEvent, TextInputChangeEventData, FlatList } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { View, Text, ScrollView, TouchableOpacity, TextInput, FlatList, Dimensions } from 'react-native'
+import React, { useEffect, useRef, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useStore } from '@/store/store';
 import ExpoStatusBar from 'expo-status-bar/build/ExpoStatusBar';
@@ -35,6 +35,7 @@ const Home = () => {
     category: categories[0]
   });
   const [sortedCoffee, setSortedCoffee] = useState<any[]>([]);
+  const coffeeListRef: any = useRef<FlatList>();
   useEffect(() => {
     const cates = getCatesFromData(coffeeList);
     if (cates != null) {
@@ -43,20 +44,51 @@ const Home = () => {
         index: 0,
         category: cates[0]
       })
+      setSortedCoffee(getCoffeeByCategory("All", coffeeList));
     }
   }, []);
-  useEffect(() => {
-    onCategoryChange();
-  }, [cateIndex]);
 
-  const onCategoryChange = () => {
-    setSortedCoffee(getCoffeeByCategory(cateIndex.category, coffeeList));
-  }
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      searchCoffee(searchValue);
+    }, 500);
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchValue])
+
   const StatusBar = () => {
     return (
       <ExpoStatusBar style='light' backgroundColor={COLORS.primaryBlackHex} />
     )
   }
+  const searchCoffee = (value: string) => {
+    if (value != null) {
+      coffeeListRef?.current?.scrollToOffset({
+        animated: true,
+        offset: 0,
+      });
+      setCateIndex({
+        index: 0,
+        category: 'All'
+      })
+      const searchResult = coffeeList.filter((item: any) => {
+        return item.name.toLowerCase().includes(value.toLowerCase());
+      }
+      );
+      setSortedCoffee(searchResult)
+    }
+  }
+  const clearSearch = () => {
+    coffeeListRef?.current?.scrollToOffset({
+      animated: true,
+      offset: 0,
+    });
+    setCateIndex({
+      index: 0,
+      category: categories[0]
+    });
+    setSortedCoffee(coffeeList);
+  }
+
 
   return (
     <SafeAreaView>
@@ -67,16 +99,16 @@ const Home = () => {
         </Text>
         {/* SEARCH BAR */}
         <View className='bg-gray-800 rounded-xl flex-row px-4 py-2 items-center mt-3'>
-          <TouchableOpacity onPress={() => { }}>
-            <FontAwesome
-              name="search"
-              size={18}
-              color={searchValue
-                ? COLORS.primaryOrangeHex
-                : COLORS.primaryLightGreyHex}
-              className=''
-            />
-          </TouchableOpacity>
+          {/* Search icon */}
+          <FontAwesome
+            name="search"
+            size={18}
+            color={searchValue
+              ? COLORS.primaryOrangeHex
+              : COLORS.primaryLightGreyHex}
+            className=''
+          />
+          {/* Search coffee input */}
           <TextInput
             placeholder='Find Your Coffee...'
             value={searchValue}
@@ -85,6 +117,17 @@ const Home = () => {
             className='ml-2 font-pmedium flex-1 text-white'
             textAlignVertical='bottom'
           />
+          {/* Clear search button */}
+          {
+            searchValue && (
+              <TouchableOpacity onPress={() => {
+                setSearchValue("");
+                clearSearch();
+              }}>
+                <FontAwesome name="close" size={18} color={COLORS.primaryLightGreyHex} />
+              </TouchableOpacity>
+            )
+          }
         </View>
         {/* CATEGORRIES SCROLLER */}
         <ScrollView horizontal className='mt-5'>
@@ -94,7 +137,11 @@ const Home = () => {
                 <TouchableOpacity
                   onPress={() => {
                     setCateIndex({ index: index, category: cate });
-                    onCategoryChange();
+                    coffeeListRef?.current?.scrollToOffset({
+                      animated: true,
+                      offset: 0,
+                    });
+                    setSortedCoffee(getCoffeeByCategory(cate, coffeeList));
                   }}
                   className='items-center'
                 >
@@ -118,7 +165,17 @@ const Home = () => {
           className='mt-2'
           horizontal
           data={sortedCoffee}
+          ref={coffeeListRef}
           keyExtractor={(item: any) => item.id}
+          ListEmptyComponent={
+            <View style={{
+              width: Dimensions.get('window').width - 12,
+            }}>
+              <Text className='text-gray-600 font-pregular text-center my-10'>
+                No coffee available
+              </Text>
+            </View>
+          }
           renderItem={({ item }) => (
             <CoffeeCard
               id={item.id}
@@ -139,7 +196,7 @@ const Home = () => {
         <FlatList
           className='mt-2'
           horizontal
-          data={beanList  }
+          data={beanList}
           keyExtractor={(item: any) => item.id}
           renderItem={({ item }) => (
             <CoffeeCard
@@ -156,7 +213,7 @@ const Home = () => {
             />
           )}
         />
-        <View className='py-10'/>
+        <View className='py-10' />
       </ScrollView>
       <StatusBar />
     </SafeAreaView>
