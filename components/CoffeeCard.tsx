@@ -3,20 +3,15 @@ import React from 'react'
 import { LinearGradient } from 'expo-linear-gradient';
 import { COLORS } from '@/theme/theme';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { Link, router } from 'expo-router';
+import { CoffeeType } from '@/types';
 const CARD_WIDTH = Dimensions.get('screen').width * 0.32;
-const CoffeeCard = ({ id, name, index, roasted, image, type, specialIngredient, averageRating, prices, onPressButton }
+const CoffeeCard = ({ coffeeData, onPressButton }
     : {
-        id: string,
-        index: number,
-        name: string,
-        roasted: string,
-        image: ImageProps,
-        type: string,
-        specialIngredient: string,
-        averageRating: number,
-        prices: any,
+        coffeeData: CoffeeType;
         onPressButton: () => void,
     }) => {
+    const { id, name, imagelink_square, special_ingredient, average_rating, prices } = coffeeData;
     return (
         <LinearGradient
             start={{ x: 0, y: 0 }}
@@ -24,9 +19,14 @@ const CoffeeCard = ({ id, name, index, roasted, image, type, specialIngredient, 
             colors={[COLORS.primaryGreyHex, COLORS.primaryBlackHex]}
             className='mx-2 p-3 rounded-lg'
         >
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => router.navigate({
+                pathname: '/coffee/[coffeeId]',
+                params: {
+                    coffeeId: id,
+                }
+            })}>
                 <ImageBackground
-                    source={image}
+                    source={imagelink_square}
                     className={`rounded-xl overflow-hidden`}
                     style={{
                         width: CARD_WIDTH,
@@ -41,7 +41,7 @@ const CoffeeCard = ({ id, name, index, roasted, image, type, specialIngredient, 
                                 size={10}
                                 color={"rgb(249 115 22)"}
                             />
-                            <Text className='ml-1 text-white font-pmedium text-xs'>{averageRating}</Text>
+                            <Text className='ml-1 text-white font-pmedium text-xs'>{average_rating}</Text>
                         </View>
                     </View>
                 </ImageBackground>
@@ -52,7 +52,7 @@ const CoffeeCard = ({ id, name, index, roasted, image, type, specialIngredient, 
                 }}
             >
                 <Text className='text-white font-pmedium mt-2'>{name}</Text>
-                <Text className='text-white font-plight text-[10px]'>{specialIngredient}</Text>
+                <Text className='text-white font-plight text-[10px]'>{special_ingredient}</Text>
                 <View className='flex-row justify-between mt-2 items-center'>
                     <Text className='text-white font-psemibold text-lg'>
                         <Text className='text-red-400'>{prices[0].currency}</Text> {prices[prices.length - 1].price}

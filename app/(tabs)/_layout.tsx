@@ -10,7 +10,6 @@ const TabsLayout = () => {
       tabBarActiveTintColor: COLORS.primaryOrangeHex,
       tabBarInactiveTintColor: COLORS.primaryLightGreyHex,
       headerShown: false,
-      // tabBarShowLabel: false,
       tabBarHideOnKeyboard: true,
       tabBarStyle: styles.tabBarStyle,
       tabBarBackground: () => (

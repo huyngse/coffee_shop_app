@@ -1,3 +1,5 @@
+import { CoffeeType } from "@/types";
+
 const CoffeeData = [
   {
     id: 'C1',

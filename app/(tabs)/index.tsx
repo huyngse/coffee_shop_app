@@ -7,7 +7,8 @@ import { COLORS } from '@/theme/theme';
 import HeaderBar from '@/components/HeaderBar';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import CoffeeCard from '@/components/CoffeeCard';
-const getCatesFromData = (data: any[]) => {
+import { CoffeeType } from '@/types';
+const getCatesFromData = (data: CoffeeType[]) => {
   let temp: any = {};
   for (let i = 0; i < data.length; i++) {
     if (temp[data[i].name] === undefined) {
@@ -20,9 +21,9 @@ const getCatesFromData = (data: any[]) => {
   cates.unshift('All');
   return cates;
 }
-const getCoffeeByCategory = (cate: string, coffeeList: any[]) => {
+const getCoffeeByCategory = (cate: string, coffeeList: CoffeeType[]) => {
   if (cate == "All") return coffeeList;
-  return coffeeList.filter((coffee: any) => coffee.name == cate);
+  return coffeeList.filter((coffee: CoffeeType) => coffee.name == cate);
 }
 // HOME PAGE
 const Home = () => {
@@ -166,7 +167,7 @@ const Home = () => {
           horizontal
           data={sortedCoffee}
           ref={coffeeListRef}
-          keyExtractor={(item: any) => item.id}
+          keyExtractor={(item: CoffeeType) => item.id}
           ListEmptyComponent={
             <View style={{
               width: Dimensions.get('window').width - 12,
@@ -178,15 +179,7 @@ const Home = () => {
           }
           renderItem={({ item }) => (
             <CoffeeCard
-              id={item.id}
-              index={item.index}
-              type={item.type}
-              roasted={item.roasted}
-              image={item.imagelink_square}
-              name={item.name}
-              specialIngredient={item.special_ingredient}
-              averageRating={item.average_rating}
-              prices={item.prices}
+              coffeeData={item}
               onPressButton={() => { }}
             />
           )}
@@ -197,18 +190,10 @@ const Home = () => {
           className='mt-2'
           horizontal
           data={beanList}
-          keyExtractor={(item: any) => item.id}
+          keyExtractor={(item: CoffeeType) => item.id}
           renderItem={({ item }) => (
             <CoffeeCard
-              id={item.id}
-              index={item.index}
-              type={item.type}
-              roasted={item.roasted}
-              image={item.imagelink_square}
-              name={item.name}
-              specialIngredient={item.special_ingredient}
-              averageRating={item.average_rating}
-              prices={item.prices}
+              coffeeData={item}
               onPressButton={() => { }}
             />
           )}
