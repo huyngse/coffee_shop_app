@@ -22,7 +22,7 @@ const CoffeeCard = ({ id, name, index, roasted, image, type, specialIngredient, 
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             colors={[COLORS.primaryGreyHex, COLORS.primaryBlackHex]}
-            className='mx-2 p-3 pb-4 rounded-lg'
+            className='mx-2 p-3 rounded-lg'
         >
             <TouchableOpacity>
                 <ImageBackground

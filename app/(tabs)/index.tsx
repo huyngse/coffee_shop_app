@@ -62,7 +62,7 @@ const Home = () => {
     <SafeAreaView>
       <ScrollView className='bg-primaryBlack h-full p-3'>
         <HeaderBar />
-        <Text className='text-white mt-8 text-2xl font-psemibold'>
+        <Text className='text-white mt-5 text-2xl font-psemibold'>
           Find the best {'\n'}coffee for you
         </Text>
         {/* SEARCH BAR */}
@@ -120,21 +120,43 @@ const Home = () => {
           data={sortedCoffee}
           keyExtractor={(item: any) => item.id}
           renderItem={({ item }) => (
-              <CoffeeCard
-                id={item.id}
-                index={item.index}
-                type={item.type}
-                roasted={item.roasted}
-                image={item.imagelink_square}
-                name={item.name}
-                specialIngredient={item.special_ingredient}
-                averageRating={item.average_rating}
-                prices={item.prices}
-                onPressButton={() => { }}
-              />
+            <CoffeeCard
+              id={item.id}
+              index={item.index}
+              type={item.type}
+              roasted={item.roasted}
+              image={item.imagelink_square}
+              name={item.name}
+              specialIngredient={item.special_ingredient}
+              averageRating={item.average_rating}
+              prices={item.prices}
+              onPressButton={() => { }}
+            />
           )}
         />
         {/* BEAN FLAT LIST */}
+        <Text className='font-psemibold text-white text-lg mt-3'>Coffee beans</Text>
+        <FlatList
+          className='mt-2'
+          horizontal
+          data={beanList  }
+          keyExtractor={(item: any) => item.id}
+          renderItem={({ item }) => (
+            <CoffeeCard
+              id={item.id}
+              index={item.index}
+              type={item.type}
+              roasted={item.roasted}
+              image={item.imagelink_square}
+              name={item.name}
+              specialIngredient={item.special_ingredient}
+              averageRating={item.average_rating}
+              prices={item.prices}
+              onPressButton={() => { }}
+            />
+          )}
+        />
+        <View className='py-10'/>
       </ScrollView>
       <StatusBar />
     </SafeAreaView>
