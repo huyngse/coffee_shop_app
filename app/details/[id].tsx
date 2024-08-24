@@ -1,9 +1,10 @@
 import { View, Text, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { ProductState, useProductStore } from '@/store/store';
 import { CoffeeType } from '@/types';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import ImageBackgroundInfo from '@/components/ImageBackgroundInfo';
 
 const Details = () => {
   const params = useLocalSearchParams<{ index: string, id: string, type: string }>();
@@ -24,11 +25,18 @@ const Details = () => {
       </View>
     )
   }
+  const backHandler = () => {
+    router.back();
+  }
   return (
-    <SafeAreaView>
-      <View className='bg-primaryBlack h-full p-3'>
+    <SafeAreaView className='bg-primaryBlack'>
+      <View className='h-full p-3'>
         <ScrollView className='h-full'>
-          <Text className='text-white'>{JSON.stringify(details)}</Text>
+          <ImageBackgroundInfo
+            details={details}
+            enableBackHandler={true}
+            backHandler={backHandler}
+          />
         </ScrollView>
       </View>
     </SafeAreaView>

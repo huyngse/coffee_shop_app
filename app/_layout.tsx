@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { SplashScreen, Stack } from 'expo-router'
 import { useFonts } from "expo-font";
+import * as SystemUI from 'expo-system-ui';
 SplashScreen.preventAutoHideAsync();
 const Layout = () => {
     const [fontsLoaded, error] = useFonts({
@@ -30,6 +31,7 @@ const Layout = () => {
     if (!fontsLoaded && !error) {
         return null;
     }
+    SystemUI.setBackgroundColorAsync("black");
     return (
         <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
