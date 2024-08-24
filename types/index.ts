@@ -20,5 +20,4 @@ export type CoffeePriceType = {
     size: string,
     price: string,
     currency: string,
-    quantity?: number
 }

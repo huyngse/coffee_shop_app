@@ -4,27 +4,37 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import CoffeeData from '@/data/CoffeeData';
 import BeansData from '@/data/BeansData';
 import { produce } from "immer"
-import { CoffeePriceType, CoffeeType } from '@/types';
+import { CoffeeType } from '@/types';
 export type CartState = {
-    CartList: CoffeeType[],
+    CartList: CoffeeCartItemType[],
     CartPrice: number,
     addToCart: (cartItem: CoffeeType) => void,
     calculateTotalPrice: () => void,
+    updateItemQuantity: (itemId: string, size: string, quantity: number) => void,
+    removeItem: (itemId: string, size: string) => void,
 }
 export type ProductState = {
     CoffeeList: CoffeeType[],
     BeanList: CoffeeType[],
 }
 export type ProfileState = {
-    FavouritesList: any[],
+    FavouritesList: CoffeeType[],
+    addToFavourite: (itemToAdd: CoffeeType) => void,
+    removeFromFavourite: (itemToRemove: CoffeeType) => void,
 }
 export type OrderState = {
     OrderHistory: any[],
 }
+export type CoffeeCartItemType = {
+    itemId: string,
+    size: string,
+    price: number,
+    quantity: number,
+}
 // If some bug happened, try merge all the store into one
 export const useProductStore = create<ProductState>()(
     persist(
-        (set) => ({
+        () => ({
             CoffeeList: CoffeeData,
             BeanList: BeansData,
         }),
@@ -40,6 +50,15 @@ export const useProfileStore = create<ProfileState>()(
     persist(
         (set) => ({
             FavouritesList: emptyArray,
+            addToFavourite: (itemToAdd: CoffeeType) => set(produce((state: ProfileState) => {
+                let isAdded = state.FavouritesList.find((item: CoffeeType) => item.id == itemToAdd.id) != null;
+                if (!isAdded) {
+                    state.FavouritesList.unshift(itemToAdd);
+                }
+            })),
+            removeFromFavourite: (itemToRemove: CoffeeType) => set(produce((state: ProfileState) => {
+                state.FavouritesList = state.FavouritesList.filter((item: CoffeeType) => item.id != itemToRemove.id);
+            })),
         }),
         {
             name: 'profile',
@@ -47,6 +66,7 @@ export const useProfileStore = create<ProfileState>()(
         }
     )
 )
+
 export const useOrderStore = create<OrderState>()(
     persist(
         (set) => ({
@@ -61,53 +81,49 @@ export const useOrderStore = create<OrderState>()(
 export const useCartStore = create<CartState>()(
     persist(
         (set) => ({
-            CartList: [],
+            CartList: emptyArray,
             CartPrice: 0,
             addToCart: (itemToAdd: CoffeeType) => set(produce((state: CartState) => {
-                // Check if item already added
                 let isFound = false;
                 for (let i = 0; i < state.CartList.length; i++) {
                     const cartItem = state.CartList[i];
-                    if (cartItem.id == itemToAdd.id) {
+                    if (cartItem.itemId === itemToAdd.id && itemToAdd.prices[0].size === cartItem.size) {
                         isFound = true;
-                        // Check if size already added
-                        let isSameSize = false;
-                        for (let j = 0; j < cartItem.prices.length; j++) {
-                            const price = itemToAdd.prices[j];
-                            // If size item already added then increase quantity
-                            if (price.size == itemToAdd.prices[0].size) {
-                                isSameSize = true;
-                                if (state.CartList[i].prices[j].quantity == undefined) {
-                                    state.CartList[i].prices[j].quantity = 0;
-                                }
-                                state.CartList[i].prices[j].quantity!++;
-                                break;
-                            }
-                        } // End for each size of item
-                        // Else size item is not added
-                        if (isSameSize == false) {
-                            state.CartList[i].prices.push(cartItem.prices[0]);
-                        }
-                        // Sort sizes
-                        state.CartList[i].prices.sort((a: CoffeePriceType, b: CoffeePriceType) => {
-                            if (a.size > b.size) {
-                                return -1;
-                            } else if (a.size < b.size) {
-                                return 1;
-                            } else {
-                                return 0;
-                            }
-                        });
+                        state.CartList[i].quantity++;
                         break;
                     }
-                    if (isFound == false) {
-                        state.CartList.push(itemToAdd);
-                    }
-                } // End for each cart item
+                }
+                if (isFound == false) {
+                    state.CartList.push(
+                        {
+                            itemId: itemToAdd.id,
+                            size: itemToAdd.prices[0].size,
+                            price: parseFloat(itemToAdd.prices[0].price),
+                            quantity: 1,
+                        }
+                    );
+                }
             })), // End addToCart function
-            calculateTotalPrice: () => {
-
-            }
+            calculateTotalPrice: () => set(produce((state: CartState) => {
+                let totalPrice = 0;
+                for (let i = 0; i < state.CartList.length; i++) {
+                    const cartItem = state.CartList[i];
+                    totalPrice += cartItem.price * cartItem.quantity;
+                }
+                state.CartPrice = totalPrice;
+            })),
+            updateItemQuantity: (itemId: string, size: string, quantity: number) => set(produce((state: CartState) => {
+                for (let i = 0; i < state.CartList.length; i++) {
+                    const cartItem = state.CartList[i];
+                    if (cartItem.itemId === itemId && cartItem.size === size) {
+                        state.CartList[i].quantity = quantity;
+                        break;
+                    }
+                }
+            })),
+            removeItem: (itemId: string, size: string) => set(produce((state: CartState) => {
+                state.CartList = state.CartList.filter((item: CoffeeCartItemType) => item.itemId != itemId || item.size != size);
+            })),
         }),
         {
             name: 'cart',
