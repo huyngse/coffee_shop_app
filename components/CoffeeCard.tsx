@@ -3,15 +3,15 @@ import React from 'react'
 import { LinearGradient } from 'expo-linear-gradient';
 import { COLORS } from '@/theme/theme';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Link, router } from 'expo-router';
 import { CoffeeType } from '@/types';
+import { router } from 'expo-router';
 const CARD_WIDTH = Dimensions.get('screen').width * 0.32;
 const CoffeeCard = ({ coffeeData, onPressButton }
     : {
         coffeeData: CoffeeType;
         onPressButton: () => void,
     }) => {
-    const { id, name, imagelink_square, special_ingredient, average_rating, prices } = coffeeData;
+    const { id, index, type, name, imagelink_square, special_ingredient, average_rating, prices } = coffeeData;
     return (
         <LinearGradient
             start={{ x: 0, y: 0 }}
@@ -19,12 +19,16 @@ const CoffeeCard = ({ coffeeData, onPressButton }
             colors={[COLORS.primaryGreyHex, COLORS.primaryBlackHex]}
             className='mx-2 p-3 rounded-lg'
         >
-            <TouchableOpacity onPress={() => router.navigate({
-                pathname: '/coffee/[coffeeId]',
-                params: {
-                    coffeeId: id,
-                }
-            })}>
+            <TouchableOpacity onPress={() => {
+                router.push({
+                    pathname: '/details/[id]',
+                    params: {
+                        index: index,
+                        id: id,
+                        type: type
+                    }
+                });
+            }}>
                 <ImageBackground
                     source={imagelink_square}
                     className={`rounded-xl overflow-hidden`}
