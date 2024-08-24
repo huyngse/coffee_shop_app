@@ -68,7 +68,7 @@ const ImageBackgroundInfo = ({
           </View>
           <View className='w-1/4'>
             <View className='m-2 p-2 bg-gray-900 rounded-lg items-center justify-center'>
-              <FontAwesome name="coffee" size={24} color="orange" />
+              <FontAwesome name={details.type === "Coffee" ? "coffee" : "leaf"} size={24} color="orange" />
               <Text className='mt-1 text-gray-400 font-plight text-xs'>{details.type}</Text>
             </View>
           </View>

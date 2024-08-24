@@ -58,8 +58,8 @@ const CoffeeCard = ({ coffeeData, onPressButton }
                 <Text className='text-white font-pmedium mt-2'>{name}</Text>
                 <Text className='text-white font-plight text-[10px]'>{special_ingredient}</Text>
                 <View className='flex-row justify-between mt-2 items-center'>
-                    <Text className='text-white font-psemibold text-lg'>
-                        <Text className='text-red-400'>{prices[0].currency}</Text> {prices[prices.length - 1].price}
+                    <Text className='text-white text-lg font-pmedium'>
+                        <Text className='text-red-400 font-psemibold'>{prices[0].currency}</Text>{prices[prices.length - 1].price}
                     </Text>
                     <View className='block'>
                         <TouchableOpacity
