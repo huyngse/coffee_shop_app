@@ -34,6 +34,7 @@ export type CoffeeCartItemType = {
     imagelink_square: ImageProps,
     roasted: string,
     size: string,
+    type: string,
     price: number,
     currency: string,
     quantity: number,
@@ -119,7 +120,8 @@ export const useCartStore = create<CartState>()(
                             size: itemToAdd.prices[0].size,
                             price: parseFloat(itemToAdd.prices[0].price),
                             quantity: 1,
-                            currency: itemToAdd.prices[0].currency
+                            currency: itemToAdd.prices[0].currency,
+                            type: itemToAdd.type,
                         }
                     );
                 }
@@ -184,6 +186,7 @@ export const convertCartItemToOrderItem = (
                 roasted: cartItem.roasted,
                 special_ingredient: cartItem.special_ingredient,
                 totalPrice: cartItem.price * cartItem.quantity,
+                type: cartItem.type,
                 prices: [
                     {
                         currency: cartItem.currency,

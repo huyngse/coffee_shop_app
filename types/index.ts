@@ -27,6 +27,7 @@ export type OrderItem = {
     name: string,
     special_ingredient: string,
     imagelink_square: ImageProps,
+    type: string,
     roasted: string,
     prices: {
         size: string,

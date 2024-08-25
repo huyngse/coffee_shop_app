@@ -12,7 +12,7 @@ const PaymentFooter = ({ price, currency, buttonText, onPress }: {
             <View className='items-center w-1/3'>
                 <Text className='text-sm text-gray-400 font-pmedium'>Price</Text>
                 <Text className='text-white text-lg font-pmedium'>
-                    <Text className='text-red-400 font-psemibold'>{currency}</Text>{price}
+                    <Text className='text-red-400 font-psemibold'>{currency}</Text>{price.toFixed(2)}
                 </Text>
             </View>
             <TouchableOpacity className='w-2/3 rounded-xl py-3 bg-orange-500 justify-center items-center' onPress={onPress}>
