@@ -1,17 +1,24 @@
-import { View, Text, Dimensions, ImageBackground, ImageSourcePropType, Image, ImageProps, TouchableOpacity } from 'react-native'
+import { View, Text, Dimensions, ImageBackground, ImageSourcePropType, Image, ImageProps, TouchableOpacity, ToastAndroid } from 'react-native'
 import React from 'react'
 import { LinearGradient } from 'expo-linear-gradient';
 import { COLORS } from '@/theme/theme';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { CoffeeType } from '@/types';
 import { router } from 'expo-router';
+import { useCartStore } from '@/store/store';
 const CARD_WIDTH = Dimensions.get('screen').width * 0.32;
-const CoffeeCard = ({ coffeeData, onPressButton }
+const CoffeeCard = ({ coffeeData }
     : {
         coffeeData: CoffeeType;
-        onPressButton: () => void,
     }) => {
     const { id, index, type, name, imagelink_square, special_ingredient, average_rating, prices } = coffeeData;
+    const addToCart = useCartStore(state => state.addToCart);
+    const handleAddToCart = () => {
+        const itemToAdd: CoffeeType = { ...coffeeData };
+        itemToAdd.prices = [prices[prices.length - 1]];
+        addToCart(itemToAdd);
+        ToastAndroid.showWithGravity(`${name} is added to cart`, ToastAndroid.SHORT, ToastAndroid.CENTER);
+    }
     return (
         <LinearGradient
             start={{ x: 0, y: 0 }}
@@ -64,7 +71,7 @@ const CoffeeCard = ({ coffeeData, onPressButton }
                     <View className='block'>
                         <TouchableOpacity
                             className='items-center justify-center bg-orange-500 p-2 rounded-md aspect-square'
-                            onPress={onPressButton}
+                            onPress={handleAddToCart}
                         >
                             <FontAwesome name="plus" size={15} color="white" />
                         </TouchableOpacity>
