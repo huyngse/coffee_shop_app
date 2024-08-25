@@ -9,6 +9,7 @@ import { COLORS } from '@/theme/theme';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import PaymentFooter from '@/components/PaymentFooter';
 import { router } from 'expo-router';
+import EmptyListAnimation from '@/components/EmptyListAnimation';
 
 const Cart = () => {
   const cartList = useCartStore(state => state.CartList);
@@ -23,9 +24,7 @@ const Cart = () => {
     return (
       <SafeAreaView className='flex-1 bg-gray-950 p-3'>
         <HeaderBar title='Cart' />
-        <View className='justify-center items-center h-full bg-gray-950'>
-          <Text className='text-gray-400 font-pregular'>Cart is empty</Text>
-        </View>
+        <EmptyListAnimation title='Cart is Empty'/>
       </SafeAreaView>
     )
   } else {
