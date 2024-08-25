@@ -21,3 +21,23 @@ export type CoffeePriceType = {
     price: string,
     currency: string,
 }
+
+export type OrderItem = {
+    id: string,
+    name: string,
+    special_ingredient: string,
+    imagelink_square: ImageProps,
+    roasted: string,
+    prices: {
+        size: string,
+        price: number,
+        currency: string,
+        quantity: number,
+    }[],
+    totalPrice: number
+}
+export type OrderType = {
+    orderDate: string,
+    items: OrderItem[],
+    totalPrice: number,
+}

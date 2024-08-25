@@ -180,7 +180,6 @@ const Home = () => {
           renderItem={({ item }) => (
             <CoffeeCard
               coffeeData={item}
-              onPressButton={() => { }}
             />
           )}
         />
@@ -194,7 +193,6 @@ const Home = () => {
           renderItem={({ item }) => (
             <CoffeeCard
               coffeeData={item}
-              onPressButton={() => { }}
             />
           )}
         />
