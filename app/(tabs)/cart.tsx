@@ -80,7 +80,7 @@ const Cart = () => {
                         item.prices.length == 1 ? (
                           <>
                             <View className='flex-row justify-between mt-1 items-center space-x-5'>
-                              <Text className='text-white font-pmedium bg-gray-900 px-3 py-2 rounded-lg flex-1 text-center'>
+                              <Text className={`text-white font-pmedium bg-gray-900 px-3 py-2 rounded-lg flex-1 text-center ${item.type === "Bean" && "text-xs py-3"}`}>
                                 {item.prices[0].size}
                               </Text>
                               <Text className='text-white font-psemibold text-xl flex-1'>
@@ -122,7 +122,7 @@ const Cart = () => {
                     {
                       item.prices.length > 1 && item.prices.map((price) => (
                         <View className='flex-row justify-between items-center' key={price.size}>
-                          <Text className='text-white font-pmedium bg-gray-900 px-3 py-2 rounded-lg w-20 text-center'>
+                          <Text className={`w-24 text-white font-pmedium bg-gray-900 px-3 py-2 rounded-lg text-center ${item.type === "Bean" && "text-xs py-3"}`}>
                             {price.size}
                           </Text>
                           <Text className='text-white font-psemibold text-lg w-14 overflow-clip'>

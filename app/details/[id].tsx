@@ -59,7 +59,9 @@ const Details = () => {
             backHandler={backHandler}
           />
           <View className='p-3'>
-            <Text className='text-gray-400 font-psemibold my-2'>Description</Text>
+            <Text className='text-gray-400 font-psemibold my-2'>
+              Description
+            </Text>
             {
               showFullDescription ? (
                 <TouchableWithoutFeedback onPress={() => { setShowFullDescription(false) }}>
