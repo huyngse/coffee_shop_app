@@ -39,6 +39,7 @@ export type OrderItem = {
 }
 export type OrderType = {
     orderDate: string,
+    paymentMethod: string,
     items: OrderItem[],
     totalPrice: number,
 }

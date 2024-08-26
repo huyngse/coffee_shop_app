@@ -24,7 +24,7 @@ const Cart = () => {
     return (
       <SafeAreaView className='flex-1 bg-gray-950 p-3'>
         <HeaderBar title='Cart' />
-        <EmptyListAnimation title='Cart is Empty'/>
+        <EmptyListAnimation title='Cart is Empty' />
       </SafeAreaView>
     )
   } else {
@@ -158,7 +158,17 @@ const Cart = () => {
         </View>
 
         <View>
-          <PaymentFooter price={totalPrice} currency='$' buttonText='Pay' />
+          <PaymentFooter
+            price={totalPrice}
+            currency='$'
+            buttonText='Pay'
+            onPress={() => { router.push({
+              pathname: '/payment',
+              params: {
+                amount: totalPrice
+              }
+            }) }}
+          />
           <View className='py-10' />
         </View>
       </ScrollView>
