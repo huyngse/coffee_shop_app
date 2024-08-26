@@ -26,6 +26,7 @@ export type ProfileState = {
 }
 export type OrderState = {
     OrderHistory: OrderType[],
+    createOrder: (cartItems: OrderItem[], paymentMethod: string) => void,
 }
 export type CoffeeCartItemType = {
     itemId: string,
@@ -79,12 +80,13 @@ export const useOrderStore = create<OrderState>()(
     persist(
         (set) => ({
             OrderHistory: emptyArray,
-            createOrder: (cartItems: OrderItem[]) => set(produce((state: OrderState) => {
+            createOrder: (cartItems: OrderItem[], paymentMethod: string) => set(produce((state: OrderState) => {
                 let totalPrice = cartItems.reduce((accumulator: number, currentValue: OrderItem) => accumulator + currentValue.totalPrice, 0);
                 state.OrderHistory.unshift({
                     orderDate: new Date().toISOString(),
                     items: cartItems,
-                    totalPrice: totalPrice
+                    totalPrice: totalPrice,
+                    paymentMethod: paymentMethod,
                 })
             }))
         }),

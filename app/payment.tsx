@@ -9,6 +9,8 @@ import { router, useLocalSearchParams } from 'expo-router'
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { LinearGradient } from 'expo-linear-gradient'
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import { convertCartItemToOrderItem, useCartStore, useOrderStore } from '@/store/store'
+import PopUpAnimation from '@/components/PopUpAnimation'
 const paymentOptions = [
     {
         name: "Wallet",
@@ -32,11 +34,31 @@ const paymentOptions = [
     },
 ]
 const Payment = () => {
+    const cartItems = useCartStore(state => state.CartList);
+    const createOrder = useOrderStore(state => state.createOrder);
+    const clearCart = useCartStore(state => state.clearItem);
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("Credit Card");
+    const [showAnimation, setShowAnimation] = useState(false);
     const { amount } = useLocalSearchParams<{ amount: string }>();
+    const handleCreateOrder = () => {
+        setShowAnimation(true);
+        // const orderItems = convertCartItemToOrderItem(cartItems);
+        // createOrder(orderItems, selectedPaymentMethod);
+        // clearCart();
+        setTimeout(() => {
+            setShowAnimation(false);
+            router.navigate('/(tabs)/history');
+        }, 2000)
+    }
+
     return (
         <SafeAreaView className='flex-1 bg-gray-950 p-3'>
             <ScrollView contentContainerStyle={{ justifyContent: "space-between", flex: 1 }}>
+                {
+                    showAnimation && (
+                        <PopUpAnimation source={require('../lottie/successful.json')} />
+                    )
+                }
                 <View>
                     <View className='flex-row items-center justify-between'>
                         <GrandientButton
@@ -80,7 +102,7 @@ const Payment = () => {
                                 </View>
                                 <Text
                                     className='text-white my-8 font-pregular text-lg'
-                                    style={{ letterSpacing: 3.85}}
+                                    style={{ letterSpacing: 3.85 }}
                                 >
                                     3897 8923 6745 4638
                                 </Text>
@@ -147,6 +169,7 @@ const Payment = () => {
                         price={parseFloat(amount)}
                         currency='$'
                         buttonText={`Pay with ${selectedPaymentMethod}`}
+                        onPress={handleCreateOrder}
                     />
                 </View>
             </ScrollView>
