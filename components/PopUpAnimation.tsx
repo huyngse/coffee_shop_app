@@ -7,7 +7,7 @@ const PopUpAnimation = ({ source }
         source: any,
     }) => {
     return (
-        <View className='flex-1 absolute top-0 bottom-0 left-0 right-0 z-50 justify-center items-center bg-gray-900/50'>
+        <View className='flex-1 absolute top-0 bottom-0 left-0 right-0 z-50 justify-center items-center bg-gray-900/50' pointerEvents='none'>
             <LottieView
                 source={source}
                 loop={false}
