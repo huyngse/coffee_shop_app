@@ -42,9 +42,9 @@ const Payment = () => {
     const { amount } = useLocalSearchParams<{ amount: string }>();
     const handleCreateOrder = () => {
         setShowAnimation(true);
-        // const orderItems = convertCartItemToOrderItem(cartItems);
-        // createOrder(orderItems, selectedPaymentMethod);
-        // clearCart();
+        const orderItems = convertCartItemToOrderItem(cartItems);
+        createOrder(orderItems, selectedPaymentMethod);
+        clearCart();
         setTimeout(() => {
             setShowAnimation(false);
             router.navigate('/(tabs)/history');
