@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react'
-import { SplashScreen, Stack } from 'expo-router'
+import { Stack } from 'expo-router'
 import { useFonts } from "expo-font";
 import * as SystemUI from 'expo-system-ui';
+import * as SplashScreen from 'expo-splash-screen';
 SplashScreen.preventAutoHideAsync();
 const Layout = () => {
     const [fontsLoaded, error] = useFonts({
